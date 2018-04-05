@@ -3,6 +3,7 @@ package com.thoughtworks.collection;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -103,26 +104,83 @@ public class Add {
     }
 
     public double getMedianOfEvenIndex(List<Integer> arrayList) {
-        throw new NotImplementedException();
+        List<Integer> allEvenNum = arrayList.stream()
+                .filter(num ->num%2 == 0)
+                .collect(Collectors.toList());
+
+        int mediumIndex = allEvenNum.size()/2;
+
+        double medimuNum;
+        if (allEvenNum.size() % 2 == 0) {
+            medimuNum = (allEvenNum.get(mediumIndex - 1) +
+                    allEvenNum.get(mediumIndex)) / 2;
+        } else {
+            medimuNum = (double)allEvenNum.get(mediumIndex);
+        }
+
+        return medimuNum;
     }
 
     public double getAverageOfEvenIndex(List<Integer> arrayList) {
-        throw new NotImplementedException();
+        List<Integer> allEvenNum = arrayList.stream()
+                .filter(num -> num % 2 == 0)
+                .collect(Collectors.toList());
+        int sumOfEvenIndex = allEvenNum.stream()
+                .reduce((sum, ele) -> sum + ele)
+                .get();
+        double averageOfEvenIndex = sumOfEvenIndex / allEvenNum.size();
+        return averageOfEvenIndex;
+
     }
 
     public boolean isIncludedInEvenIndex(List<Integer> arrayList, Integer specialElment) {
-        throw new NotImplementedException();
+        List<Integer> allEvenNum = arrayList.stream()
+                .filter(num -> num % 2 == 0)
+                .collect(Collectors.toList());
+
+        return allEvenNum.contains(specialElment);
     }
 
     public List<Integer> getUnrepeatedFromEvenIndex(List<Integer> arrayList) {
-        throw new NotImplementedException();
+        List<Integer> allEvenNumWioutDuplicate = arrayList.stream()
+                .filter(num -> num % 2 == 0)
+                .distinct()
+                .collect(Collectors.toList());
+
+        return allEvenNumWioutDuplicate;
     }
 
     public List<Integer> sortByEvenAndOdd(List<Integer> arrayList) {
-        throw new NotImplementedException();
+        List<Integer> allEvenEle = arrayList.stream()
+                .filter(num -> num % 2 == 0)
+                .sorted()
+                .collect(Collectors.toList());
+
+        List<Integer> allOddEle = arrayList.stream()
+                  .filter(num -> num % 2 == 1)
+                  .sorted(Comparator.reverseOrder())
+                  .collect(Collectors.toList());
+
+        List<Integer> eleSortByEvenAndOdd = new ArrayList<>(allEvenEle);
+        eleSortByEvenAndOdd.addAll(allOddEle);
+        return  eleSortByEvenAndOdd;
     }
 
     public List<Integer> getProcessedList(List<Integer> arrayList) {
-        throw new NotImplementedException();
+
+        List<List<Integer>> divideGroupList = new ArrayList<>();
+        for (int i = 0; i <arrayList.size()-1 ; i+=1) {
+            List<Integer> oneGroupList = new ArrayList<>();
+            oneGroupList.add(arrayList.get(i));
+            oneGroupList.add(arrayList.get(i+1));
+            divideGroupList.add(oneGroupList);
+        }
+
+        List<Integer> processedList = divideGroupList.stream()
+                .map((oneGroupList)->{
+                   return (oneGroupList.get(0)+oneGroupList.get(1))*3;
+                })
+                .collect(Collectors.toList());
+        return processedList;
     }
 }

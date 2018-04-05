@@ -20,6 +20,7 @@ public class AddTest {
         assertThat(add.getSumOfEvens(rightBorder, leftBorder)).isEqualTo(30);
     }
 
+
     @Test
     public void should_get_sum_of_odds() {
         //求leftBorder 和rightBorder之间的奇数和

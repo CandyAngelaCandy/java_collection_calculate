@@ -46,7 +46,7 @@ public class CollectionOperatorTest {
 
     @Test
     public void should_pop_even_elements() {
-    //选出给定区间中所有的偶数
+    //选出给定数组中所有的偶数
         int[] array = new int[]{1, 2, 3, 4, 5};
 
         Integer[] result = new Integer[]{2, 4};

@@ -1,68 +1,50 @@
 package com.thoughtworks.collection;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Add {
     public static void main(String[] args) {
         Add add = new Add();
-        System.out.println(add.getSumOfEvens(10,1));
+        System.out.println(add.getSumOfEvens(10, 1));
     }
 
     public int getSumOfEvens(int leftBorder, int rightBorder) {
 
-        int leftMinVal,rightMaxVal;
-
         if (leftBorder > rightBorder) {
-            leftMinVal = rightBorder;
-            rightMaxVal = leftBorder;
-        } else {
-            leftMinVal = leftBorder;
-            rightMaxVal = rightBorder;
+            int temp = leftBorder;
+            leftBorder = rightBorder;
+            rightBorder = temp;
         }
 
-        List<Integer> numBetweenLeftAndRight = new ArrayList<>();
-        for (Integer i = leftMinVal ; i < rightMaxVal + 1; i++) {
-            numBetweenLeftAndRight.add(i);
-        }
-
-        int sumOfEvens = numBetweenLeftAndRight.stream()
+        int sumOfEvens = Stream.iterate(leftBorder, item -> item + 1)
+                .limit(rightBorder)
                 .filter(e -> e % 2 == 0)
                 .reduce((sum, ele) -> sum + ele)
                 .get();
 
         return sumOfEvens;
-
     }
 
     public int getSumOfOdds(int leftBorder, int rightBorder) {
 
-        int leftMinVal,rightMaxVal;
-
         if (leftBorder > rightBorder) {
-            leftMinVal = rightBorder;
-            rightMaxVal = leftBorder;
-        } else {
-            leftMinVal = leftBorder;
-            rightMaxVal = rightBorder;
+            int temp = leftBorder;
+            leftBorder = rightBorder;
+            rightBorder = temp;
         }
 
-        List<Integer> numBetweenLeftAndRight = new ArrayList<>();
-        for (Integer i = leftMinVal ; i < rightMaxVal + 1; i++) {
-            numBetweenLeftAndRight.add(i);
-        }
-
-        int sumOfOdds = numBetweenLeftAndRight.stream()
+        int sumOfOdds = Stream.iterate(leftBorder, item -> item + 1)
+                .limit(rightBorder)
                 .filter(e -> e % 2 == 1)
                 .reduce((sum, ele) -> sum + ele)
                 .get();
 
         return sumOfOdds;
-
     }
 
     public int getSumTripleAndAddTwo(List<Integer> arrayList) {
@@ -105,31 +87,30 @@ public class Add {
 
     public double getMedianOfEvenIndex(List<Integer> arrayList) {
         List<Integer> allEvenNum = arrayList.stream()
-                .filter(num ->num%2 == 0)
+                .filter(num -> num % 2 == 0)
                 .collect(Collectors.toList());
 
-        int mediumIndex = allEvenNum.size()/2;
+        int mediumIndex = allEvenNum.size() / 2;
 
         double medimuNum;
         if (allEvenNum.size() % 2 == 0) {
             medimuNum = (allEvenNum.get(mediumIndex - 1) +
                     allEvenNum.get(mediumIndex)) / 2;
         } else {
-            medimuNum = (double)allEvenNum.get(mediumIndex);
+            medimuNum = (double) allEvenNum.get(mediumIndex);
         }
 
         return medimuNum;
     }
 
     public double getAverageOfEvenIndex(List<Integer> arrayList) {
-        List<Integer> allEvenNum = arrayList.stream()
+
+        IntSummaryStatistics stats = arrayList.stream()
                 .filter(num -> num % 2 == 0)
-                .collect(Collectors.toList());
-        int sumOfEvenIndex = allEvenNum.stream()
-                .reduce((sum, ele) -> sum + ele)
-                .get();
-        double averageOfEvenIndex = sumOfEvenIndex / allEvenNum.size();
-        return averageOfEvenIndex;
+                .mapToInt((x) -> x)
+                .summaryStatistics();
+
+        return stats.getAverage();
 
     }
 
@@ -157,28 +138,29 @@ public class Add {
                 .collect(Collectors.toList());
 
         List<Integer> allOddEle = arrayList.stream()
-                  .filter(num -> num % 2 == 1)
-                  .sorted(Comparator.reverseOrder())
-                  .collect(Collectors.toList());
+                .filter(num -> num % 2 == 1)
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.toList());
 
         List<Integer> eleSortByEvenAndOdd = new ArrayList<>(allEvenEle);
         eleSortByEvenAndOdd.addAll(allOddEle);
-        return  eleSortByEvenAndOdd;
+
+        return eleSortByEvenAndOdd;
     }
 
     public List<Integer> getProcessedList(List<Integer> arrayList) {
 
         List<List<Integer>> divideGroupList = new ArrayList<>();
-        for (int i = 0; i <arrayList.size()-1 ; i+=1) {
+        for (int i = 0; i < arrayList.size() - 1; i += 1) {
             List<Integer> oneGroupList = new ArrayList<>();
             oneGroupList.add(arrayList.get(i));
-            oneGroupList.add(arrayList.get(i+1));
+            oneGroupList.add(arrayList.get(i + 1));
             divideGroupList.add(oneGroupList);
         }
 
         List<Integer> processedList = divideGroupList.stream()
-                .map((oneGroupList)->{
-                   return (oneGroupList.get(0)+oneGroupList.get(1))*3;
+                .map((oneGroupList) -> {
+                    return (oneGroupList.get(0) + oneGroupList.get(1)) * 3;
                 })
                 .collect(Collectors.toList());
         return processedList;

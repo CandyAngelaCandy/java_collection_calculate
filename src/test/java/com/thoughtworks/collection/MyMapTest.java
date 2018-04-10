@@ -40,12 +40,12 @@ public class MyMapTest {
     @Test
     public void should_map_to_letters() {
         //字母表映射
-        Integer[] array = new Integer[]{1, 13, 27, 30, 52, 53};
+        Integer[] array = new Integer[]{1, 13, 27, 30, 52, 53, 702,703};
         List<Integer> list = Arrays.asList(array);
 
         MyMap myMap = new MyMap(list);
 
-        String[] result = new String[]{"a", "m", "aa", "ad", "az", "ba"};
+        String[] result = new String[]{"a", "m", "aa", "ad", "az", "ba","zz","zza"};
         List<String> resultList = Arrays.asList(result);
 
         assertThat(myMap.mapLetters()).isEqualTo(resultList);
